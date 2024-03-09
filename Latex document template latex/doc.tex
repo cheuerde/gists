@@ -1,0 +1,236 @@
+\documentclass[a4paper,DIVcalc,12pt,liststotoc,bibtotoc,headsepline,plainheadsepline]{scrartcl}
+%\documentclass[12pt,a4paper,DIV13]{article}
+\usepackage{geometry}
+
+
+\geometry{a4paper, left=3.5cm, right=2.5cm, top=3cm, bottom=3cm}
+
+\usepackage[utf8x]{inputenc}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx,textcomp,booktabs,amsmath}
+\usepackage{mathptmx,courier}
+\usepackage[scaled]{helvet}
+\usepackage[ngerman]{babel} 
+%\usepackage[T1]{fontenc} % latin1 wird auch in der kompilierten datei verwendet
+%\baselineskip15pt % zeilenabstand 15
+%\linespread{1.25}
+\usepackage[onehalfspacing]{setspace}
+\fontfamily{ptm}\selectfont % ptm ist times new roman
+\parindent 0pt % kein Einzug nach Absatz
+ % so soll das sein
+
+
+\usepackage{natbib}
+
+\usepackage{rotating}
+\usepackage{multirow}
+\newcommand{\circa}{\ensuremath{\sim}}
+\newcommand{\var}{\ensuremath{\sigma}}
+\graphicspath{{c:/plots/}}
+%\usepackage{scrpage2}
+\usepackage{multicol}
+
+%%%  Kopf und Fußzeile %%%
+
+\usepackage{scrpage2}
+\clearscrheadfoot
+\ihead{\headmark}
+\ofoot[\pagemark]{\pagemark}
+\automark{section}
+\pagestyle{scrheadings}
+\renewcommand*{\sectionmarkformat}{}  %Macht die Nummer der Section aus dem Header weg
+
+\deftripstyle{sectionstyle}{}{}{}{}{}{\pagemark} % eigener Pagestyle - nur Seitanzahl unten rechts, sonst nichts
+
+
+\hyphenation{aus-schliess-lich}
+\hyphenation{Re-gression}
+\hyphenation{meh-re-ren}
+\hyphenation{Asso-zia-tions-studien}
+\hyphenation{Ha-plo-typ-bl\"ocke}
+\hyphenation{Re-gressions-an-satz}
+\hyphenation{Pro-duktions-k\"u-hen}
+
+
+\begin{document}
+
+\begin{titlepage}
+
+
+
+\vspace{30pt}
+
+
+\vspace{30pt}
+
+\begin{center}
+\huge{
+PhD Outline}
+\end{center}
+
+\vspace{30pt}
+
+
+\vspace{30pt}
+
+
+\vspace{50pt}
+\begin{center}
+\large
+Claas Heuer
+\end{center}
+
+\vspace{50pt}
+\begin{center}
+Kiel, im Oktober 2013
+\end{center}
+
+
+
+
+\end{titlepage}
+\clearpage
+
+
+\clearpage
+\pagenumbering {arabic}
+
+
+
+
+
+
+\thispagestyle{sectionstyle}
+\section{GWAS for Dominance}
+
+- Done -
+
+\section{Decorreltaion for GWAS}
+We can account for population stratification (genomic relationship) using a simple transforamtion of the genotype-matrix:
+
+\begin{equation*}
+g = M_{U}\alpha
+\end{equation*}
+
+\begin{equation*}
+M_{U} = (MM')^{-1/2}M
+\end{equation*} 
+%\pause
+
+
+\begin{align*}
+Var(g|M_{U}) &= M_{U}M_{U}'\sigma_{\alpha}^2 \\
+&= ((MM')^{-1/2}M)((MM')^{-1/2}M)'\sigma_{\alpha}^2  \\
+&= (MM')^{-1/2}MM'(MM')^{-1/2}\sigma_{\alpha}^2 \\
+&= (MM')^{-1/2}(MM')^{1/2}(MM')^{1/2}(MM')^{-1/2}\sigma_{\alpha}^2 \\
+&= I\sigma_{\alpha}^2
+\end{align*}
+
+\subsection{Paper}
+
+Short description of the method with application to real Fleckvieh data set. Maybe compare to other methods.
+BMC Genetics
+
+\clearpage
+\thispagestyle{sectionstyle}
+
+\section{Genomic Prediction using Dominance}
+
+Explicitely modeling dominance as marker effects or breeding values for genomic prediction of dairy cows.
+
+\subsection{GBLUP for genotyped animals}
+Already analysed: Genomic prediction within Holstein cow data set using weighted genomic relationship matrices for both additive and dominance using this model:
+
+\begin{equation*}
+y = Xb + a + d + e ~~~ \textnormal{, with $a,d$} \sim N(0,G_{a/d} \sigma^{2}_{a/d}) 
+\end{equation*}
+
+
+
+\begin{equation*}
+G_i = \frac{M_i W_i M_{i}'}{\sum w_{i}^2}  ~~~ \textnormal{, with i = additive or dominance}
+\end{equation*}
+\begin{equation*}
+W_a = diag\left\{\frac{w_{a_j}^2}{2 p_j q_j}\right\}_{j=1}^{m} ~,~ W_d = diag\left\{\frac{w_{d_j}^2}{2 p_j q_j (1 - 2 p_j q_j)}\right\}_{j=1}^{m} 
+\end{equation*}
+
+
+Mixed model with two random effects for Gibbs Sampling (Waldmann et al., 2008):
+
+\begin{equation*}
+y = Xb + F_a c_a + F_d c_d + e 
+\end{equation*}
+
+\begin{equation*}
+F_a = ZA^{1/2} ~,~ F_d = ZD^{1/2} \textnormal{  and  } c_a = A^{-1/2}a ~,~ c_d = D^{-1/2}d 
+\end{equation*}
+
+\subsection{Estimating marker effects for ungenotyped animals}
+
+Larger number of individuals makes it hardly feasible to compute relationship matrices and as the animal and marker model are equivalent we choose to estimate marker effects based on somehow predicted/estimated/derived genotypes for ungenotyped individuals.
+
+We will fit this model:
+
+\begin{equation*}
+y = Xb + M_a a + M_d d + e 
+\end{equation*}
+
+When individuals have uncertain genotypes we have to account for this error. The way of modelling this error depends on the prediction method for the genotypes. We can use Rohan's Single Step and model the error as proposed.
+The BLP must be a bad estimator for the genotypes so we can think of better ways to do that, possible ways are Peeling or Prediciton machines using A-matrix. Then we have to find ways to model the error accordingly.
+
+\clearpage
+\thispagestyle{sectionstyle}
+Error Model (Fernando, 2013):
+\begin{equation*}
+ \begin{bmatrix}
+  X'X & X'M & X_1'Z_1 \\
+  M'X & M'M + \frac{\sigma_{e}^2}{\sigma_{\alpha}^2}& M_1'Z_1  \\
+  Z_1'X_1 & Z_1'M_1 & Z_1'Z_1 + E \frac{\sigma_{e}^2}{\sigma_{\epsilon}^2}  \\
+ \end{bmatrix} 
+  \begin{bmatrix}
+  \hat{\beta} \\
+  \hat{\alpha} \\
+  \hat{\epsilon} \\
+ \end{bmatrix} = 
+  \begin{bmatrix}
+  X'y\\
+  M'y\\
+  Z'y\\
+ \end{bmatrix} 
+\end{equation*}
+
+\begin{equation*}
+g = \begin{bmatrix} M_1 \\ M_2 \\ \end{bmatrix} \alpha + Z_1 \epsilon
+\end{equation*}
+
+This Model is suitable for any kind of genotype prediction as long as we know the distribution of the prediction error ($E$). Rohan uses BLP and gets the error variance-covariance matrix from $A^{11}$.
+For a different kind of genotype prediction we need to find a way of modelling that error-distribution. 
+When using genotype probabilities there might not be the need of modelling that error, this has to be shown by proving that the marker effects are unbiased. Our simulations for the dominance GWAS already showed, that they are unbiased in the sense that the marker effects are neither over- nor underestimated.
+
+It should be straightforward to extend this approach to include a dominance effect.
+
+
+\section{Parallel genomic predictions and GWAS with 'cgen'}
+And R-Package has been developed on the basis of C++ and openMP that runs ceveral applications for genomic prediction and GWAS. 
+If we want to make a publication out of this the package needs some testing and a descent manual.
+The available functions include:
+\begin{itemize}
+\item Genomic additive and dominance relationship matrices
+\item Mixed Model for two random effects using REML or MCMC
+\item GWAS using the decorrelation approach
+\item General functions for Decorrelation and Covariance-matrices
+\item Some general functions for equation solving and data handling
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+\end{document}

@@ -1,0 +1,76 @@
+#### (Generalized) linear mixed models in R for continous and categorical traits for animal models ###
+#
+# General TasK: Fit (G)LMM in R for an animal model with hundreds 
+# of thousands of observations.
+# This is generally a feasable task, as the pedigree-based covariance structure of
+# the main random term is very sparse (A-Inverse).
+# Nevertheless, this is far from trivial directly in R and there are a lot of 
+# caveats. 
+#
+# Problems:
+# 1) Storing large (although sparse) matrices in R
+#
+# The problem that arises here is not memory but the way indices are stored
+# in common R. Integers can only store 2^31 elements, which used to be the 
+# size limitation for vectors in R before R-3.0.0. This limitation has been
+# removed (indices for long vectors are now being stored differently, partly as 
+# doubles), but packages like 'Matrix', 'Rcpp' and 'RcppEigen' are still restricted
+# to integer indices.
+#
+# 2) Matrix operations using 'Matrix'-package
+#
+# Matrix is a great package and relies on the C-library 'cholmod'.
+# Yet again we face the integer problem, but cholmod offers 'long long' versions
+# for every single function - so it is not cholmod but the Matrix-package that stands in
+# our way. For too long vectors it will throw an error saying something like "problem too large...".
+#
+# 3) Mixed Model packages
+#
+# 'lme4'
+# The standard package for that task is 'lme4', which (out of the box) does not support defining 
+# user defined covariance structures or directly passing design matrices.
+# 'pedigreemm' is supposed to overcome that limitation exactly for the purpose of fitting
+# animal models. It offers lightning fast computation of the cholesky and Inverse of A, which
+# is right what we need. The function 'editPed' adds missing individuals to the pedigree and orders
+# it according to generations. That is painfully slow implemented - install this modified package
+# to overcome the problem: https://github.com/cheuerde/pedigreemm
+# Unfortunately it turns out that pedigreemm is still not suitable for big animal models.
+# lme4 is too big to get an idea of what is going on in every step, but my guess is that 
+# a lot of overhead is generated due to verbosing and checking stuff.
+#
+# 'MCMCglmm'
+# Probably one of the most versatile and useful packages out there. It allows you to fit any
+# model that one might desire (multivariate, any distribution, covariance structeres, ...).
+# It is a gibbs sampler but still reasonably fast, and it does what lme4 fails to do:
+# Running big animal models (500k observations).
+# It also comes with a variety on pedigree functions, but pedigreemm is very nice in that
+# respect too. So it is a good idea to do the pedigree processing using pedigreemm and fit 
+# the model using MCMCglmm.
+#
+# 'BGLR'
+# Another way is to use BGLR, which was not built for that purpose but it is general enough to 
+# do the job. The main problem is that is does not take sparse design matrices...
+
+ped <- pedigree(sire = c(NA,NA,1, 1,4,5),
+dam = c(NA,NA,2,NA,3,2), label= 1:6)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

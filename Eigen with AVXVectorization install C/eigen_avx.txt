@@ -1,0 +1,31 @@
+### as of september 2014 Eigen offers in its devel branch avx vectorization
+### see: http://comments.gmane.org/gmane.comp.lib.eigen/4545
+
+### get the devel-headers
+
+wget -O - http://bitbucket.org/eigen/eigen/get/default.tar.gz > Eigen-Devel.tar.gz
+
+### or
+
+hg clone https://bitbucket.org/eigen/eigen/
+
+### untar
+
+mkdir $HOME/Eigen-Devel
+tar -xf Eigen-Devel.tar.gz 
+cd eigen*
+mv Eigen/* $HOME/Eigen-Devel
+cd ..
+rm -r eigen*
+
+### include eigen headers to your .cpp
+
+#include "$HOME/Eigen-Devel/Eigen"
+
+### compiling with avx-vectorization
+
+g++ foo.cpp -mavx -mfam
+
+
+
+

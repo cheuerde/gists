@@ -1,0 +1,265 @@
+\documentclass[a4paper,DIVcalc,12pt,liststotoc,headsepline,plainheadsepline]{scrartcl}
+%\documentclass[12pt,a4paper,DIV13]{article}
+\usepackage{geometry}
+
+
+\geometry{a4paper, left=2.5cm, right=2.5cm, top=2cm, bottom=2cm}
+
+\usepackage[utf8x]{inputenc}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+% dieses Paket kann benutzt werden um PDFs ins Dokument einzufügen
+\usepackage{pdfpages}
+\usepackage{graphicx,textcomp,booktabs,amsmath}
+\usepackage{mathptmx,courier}
+\usepackage[scaled]{helvet}
+\usepackage[ngerman,english]{babel} 
+\usepackage[T1]{fontenc} % latin1 wird auch in der kompilierten datei verwendet
+\baselineskip15pt % zeilenabstand 15
+\linespread{1.25}
+\usepackage[onehalfspacing]{setspace}
+\fontfamily{ptm}\selectfont % ptm ist times new roman
+\parindent 0pt % kein Einzug nach Absatz
+ % so soll das sein
+
+\usepackage{tabularx}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}%
+\usepackage{natbib}
+
+\usepackage{rotating}
+\usepackage{multirow}
+\newcommand{\circa}{\ensuremath{\sim}}
+\newcommand{\var}{\ensuremath{\sigma}}
+\usepackage{multicol}
+
+\usepackage{scrpage2}
+
+\clearscrheadfoot
+%\ihead{\headmark}
+\ofoot[\pagemark]{\pagemark}
+\automark{section}
+
+%\renewcommand*{\sectionmarkformat}{}  %Macht die Nummer der Section aus dem Header weg
+
+\deftripstyle{sectionstyle}{}{}{}{}{}{\pagemark} % eigener Pagestyle - nur Seitanzahl unten rechts, sonst nichts
+\pagestyle{sectionstyle}
+
+\hyphenation{aus-schliess-lich}
+\hyphenation{Re-gression}
+\hyphenation{meh-re-ren}
+\hyphenation{Asso-zia-tions-studien}
+\hyphenation{Ha-plo-typ-bl\"ocke}
+\hyphenation{Re-gressions-an-satz}
+\hyphenation{Pro-duktions-k\"u-hen}
+
+\usepackage{sectsty} % hiermit kann man die textgrößen definieren
+\sectionfont{\large}
+
+\begin{document}
+
+\begin{titlepage}
+\vspace*{3cm}
+\begin{center}
+\Large
+\textbf{Application for a Synbreed supported research stay at the Iowa State University}
+\end{center}
+
+
+
+
+
+\vspace*{7cm}
+\begin{center}
+\large
+Claas Heuer\\
+Institute of Animal Breeding and Husbandry\\
+Christian-Albrechts-University Kiel\\
+\end{center}
+
+
+
+
+\begin{center}
+Kiel, October 2012
+\end{center}
+
+
+
+
+\end{titlepage}
+\clearpage
+\pagenumbering {Roman}
+\thispagestyle{sectionstyle}
+\tableofcontents
+\clearpage
+\thispagestyle{sectionstyle}
+\pagenumbering {arabic}
+
+\section{Project Description}
+
+During the last five years genomic breeding programs replaced traditional procedures in commercial dairy breeding. A lot has been learned since then and the prediction of breeding values based solely on marker information works. 
+
+The nature of breeding values is pure additivity but all other genetics effects that are imaginable are captured within them.
+The goal of my PhD project (Synbreed A2.3) is to find evidence for the existence of non-additive genetic effects in quantitative traits of dairy cows. If such evidence can be found the next step is to include estimable dominance or epistatic effects in genomic prediction approaches. They could be used to improve the accuracy of predicted breeding values \citep{bayesd} and for controlled mating of individuals to ensure a maximum expression of allele interactions.
+
+In a first approach we were trying to estimate dominance effects in a non-genotyped dairy cow population. Therefore genotype probabilities, derived using genotyped ancestors, were used in more than half a million cows. We were able to give strong evidence for the existence of dominance in quantitative dairy traits \citep{teide}.
+After having successfully shown that dominance is of importance we conducted several approaches for the inclusion of non-additive effects in genomic prediction models. Data consisting of 800 genotyped cows (50k) was used for genomic prediction of Yield Deviations, that allow the consideration of dominance. Although it could already be shown that including dominance in a genomic prediction framework \citep{maus} is able to increase prediction accuracy significantly, we were not able to verify these findings. Very high sample sizes are necessary to measure non-additive effects at thousands of marker loci. 
+We are expecting larger cohorts of genotyped females in the upcoming months which will allow deeper analysis. We are also working on genomic prediction models including derived genotype probabilities in females.
+Besides the main project of my PhD time I am interested in variable selection, parameter reduction, statistical models and software programming. When sample sizes increase marker selection will eventually become successful (Wimmer 2012) what is a necessary condition for the inclusion of non-additive genetic effects. Considering more than the  additive effect will raise the number of included explanatory variables (several per marker), which is only feasible with a preceding marker reduction.
+
+\textbf{Goals I want to achieve within the project}
+
+\begin{itemize}
+\item Answer the question of existence and importance of non-additive genetic effects in quantitative traits in dairy cows
+\item Find appropriate statistical methods for marker selection 
+\item Include allele interactions in genomic prediction models
+\item Predict production values of dairy cows
+\item Investigate the impact of Linkage Disequilibrium on the estimation of genetic effects at markers 
+\end{itemize}
+\clearpage
+
+
+\section{The choice of Iowa as the hosting working group}
+
+The working group of Prof. Rohan Fernando at the Iowa State University has a very good reputation in terms of animal breeding and genetics. 
+Prof. Fernando was one of the first scientists to include genetic information in breeding value estimation models \citep{fernando89}. He is especially engaged in the field of Bayesian methods for animal breeding and genomic prediction. This is a major aspect for the choice of Iowa. I have only little experience with advanced statistical methods and Iowa offers the expertise on that field.
+Besides Prof. Fernando also Jack C. M. Dekkers and Dorian J. Garrick represent animal breeding at the Iowa State University and they form a strong working group with a lot of experience and a wide field of research. The references give a short overview of recent research activities.
+I want to continue my ongoing research in Iowa with the support of the scientists on site. When I was talking to Prof. Fernando he immediately accepted my request and I am sure we will establish a productive collaboration.
+I also want to participate in research projects of the working group and support them as well.
+In particular Iowa offers the following opportunities for me:
+
+\begin{itemize}
+\item Expand my horizon by going abroad
+\item Gain experience in the field of genomic prediction and Bayesian methods
+\item Integrate myself into a new working group
+\item Receive ideas to solve problems in my ongoing research
+\item Improve my skills in statistical software programming
+\end{itemize}
+
+\nocite{iowa1}\nocite{iowa2}\nocite{iowa3}
+\bibliographystyle{natdin}
+\bibliography{antrag}
+
+
+\clearpage
+\section{Costs, time and course table}
+
+\textbf{Costs}
+
+\begin{tabularx}{\textwidth}{lR}
+ &  \\ 
+Round-trip: Hamburg - Des Moines & 800 € \\ 
+J1 Visa & 300 € \\ 
+Health Insurance - 6 months & 800 € \\ 
+Living expenses - 6 months & 4800 € \\ 
+\hline
+Total costs & \underline{\underline{6700 €}} \\ 
+ &  \\ 
+Funds provided by the Alfred Toepfer Stiftung F.V.S. & 2000 € \\ 
+\hline
+Uncovered costs & \underline{\underline{4700 €}} \\ 
+ &  \\ 
+\end{tabularx}
+
+\textbf{Time table}
+
+\begin{tabularx}{\textwidth}{lR}
+ &  \\ 
+April 2013 & Flight to Iowa \\ 
+May 2013 & Begin of summer audit classes \\ 
+August 2013 & End of summer audit classes \\ 
+September/October 2013 & Flight to Germany \\ 
+ &  \\ 
+\end{tabularx}
+
+\textbf{Courses}
+
+\begin{tabularx}{\textwidth}{lR}
+ &  \\ 
+S 655. Advanced Computational Methods  & R. Fernando \\ 
+in Animal Breeding and Genetics & \\ 
+ &  \\ 
+S 656. Statistical Methods & R. Fernando \\ 
+for Mapping Quantitative Trait Loci & \\ 
+ &  \\ 
+\end{tabularx}
+
+
+
+
+\clearpage
+\section{Curriculum Vitae}
+  
+\textbf{\large{Education}}
+
+\begin{tabularx}{\textwidth}{lR}
+ &  \\ 
+PhD student at the  University of Kiel & since February 2012 \\ 
+Institute of Animal Breeding and Husbandry &  \\ 
+
+ &  \\ 
+Study of Agrosciences (M.Sc.) & April 2010 - February 2012 \\ 
+University of Kiel &  \\
+ &  \\ 
+
+Study of Agrosciences (B.Sc.)  & September 2006 - February 2010 \\ 
+University of Applied Sciences Kiel &  \\ 
+ &  \\ 
+Education for agriculture (Landwirt) & July 2004 - July 2006  \\ 
+ &  \\ 
+Jürgen-Fuhlendorf-Gymnasium (Highschool) & 1995 - 2004 \\ 
+Bad Bramstedt &  \\ 
+ &  \\ 
+Elementary School Wrist & 1991 - 1995 \\ 
+ &  \\ 
+\end{tabularx} 
+
+\textbf{\large{Jobs on dairy farms}}
+
+\begin{tabularx}{\textwidth}{lR}
+ &  \\ 
+Hauke Carstens  & since February 2012 \\ 
+Friedrichsholm  &  \\ 
+ &  \\ 
+Klaus-Hermann Rohwer & September 2008 - February 2012 \\ 
+Heinkenborstel &  \\
+ &  \\ 
+
+Yasuhiro Yoshida  & April 2008 - September 2008 \\ 
+Ogano, Japan &  \\ 
+ &  \\ 
+Hans-Jürgen Voss & January 2008 - April 2008  \\ 
+Heidmoor &  \\
+ &  \\ 
+Jürgen Thietjens & November 2007 - April 2008  \\ 
+Bimöhlen &  \\
+ &  \\ 
+Helmut Heuer & July 2006 - November 2007  \\ 
+Hingstheide & \\
+\end{tabularx} 
+
+
+
+\clearpage
+\addsec{Appendix}
+The Appendix includes the following documents:
+
+\begin{itemize}
+\item Supporting letter from Prof. Rohan Fernando
+\item Certificate of additional funds provided by the Alfred Toepfer Stiftung F.V.S.
+\item M.Sc. Certificate
+\item B.Sc. Certificate
+\item Certificate Landwirt
+\item Certificate Abitur
+\end{itemize}
+\clearpage
+% here you can insert your PDFs
+%\includepdf[pages=1]{a.pdf}
+%\includepdf[pasges=1]{b.pdf}
+%\includepdf[pages=1-2]{c.pdf}
+%\includepdf[pages=1-4]{d.pdf}
+%\includepdf[pages=1-2]{e.pdf}
+%\includepdf[pages=1-4]{f.pdf}
+
+\end{document}

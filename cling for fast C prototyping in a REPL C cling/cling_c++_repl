@@ -1,0 +1,20 @@
+# Install binaries (compiling from source is heavy)
+
+wget https://ecsft.cern.ch/dist/cling/current/cling-Ubuntu-14.04-64bit-2a87d75fed.tar.bz2
+
+tar -xf cling-Ubuntu-14.04-64bit-2a87d75fed.tar.bz2
+
+cd cling-Ubuntu-14.04-64bit-2a87d75fed
+
+sudo cp -R * /usr/local/
+
+# now everything needed is in the standard path
+
+# run cling with c++11 support
+
+cling -std=c++11
+
+
+
+
+

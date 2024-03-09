@@ -1,0 +1,21 @@
+# get svn:
+
+sudo apt-get install subversion
+
+# get the svn-repository you are working with (e.g. Rforge project)
+
+svn checkout svn+ssh://cheuer@r-forge.r-project.org/svnroot/cgen/
+
+# a local folder on your machine will be created in the place from where
+# you executed the command. 
+
+# add a folder/package: switch to your local project folder and do:
+
+cd pkg
+svn add cgen
+svn commit
+
+# delete:
+
+svn delete cgen
+svn commit

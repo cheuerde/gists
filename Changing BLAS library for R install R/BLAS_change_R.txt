@@ -1,0 +1,18 @@
+# it is straightforward to change the BLAS-library that is used by an R-instance.
+# For this we can use the environmental variable LD_PRELOAD.
+# This variable will load any library specified prior to all others, so we
+# can define a priority for certain libraries
+#
+# So in terms of R we would do something like this:
+
+# imagine my BLAS-library is located in /home/user/myBLAS/BLAS.so
+
+# invoke R with 'myBLAS'
+
+LD_PRELOAD=/home/user/myBLAS/BLAS.so R
+
+# For convenience we could define scripts for various BLAS libraries
+
+
+
+

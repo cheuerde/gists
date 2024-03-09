@@ -1,0 +1,103 @@
+#####################################################
+### How to compile R and link it against OpenBLAS ###
+#####################################################
+
+# Assuming no root priviledges on the destination machine,
+# so we have to compile our software locally
+
+# set default installation directory:
+INSTDIR=$HOME/opt
+
+# place to store the source packages
+SOURCES=$HOME/sourcebuilds
+
+# make dirs (if they dont exist)
+mkdir $INSTDIR
+mkdir $SOURCES
+
+# make sure GNU compiler is being used
+export CC=gcc
+export CXX=g++
+
+
+##########################
+### Compiling OpenBLAS ###
+##########################
+
+cd $SOURCES
+
+# download tarball
+wget http://github.com/xianyi/OpenBLAS/archive/v0.2.14.tar.gz
+
+# extract tarball
+tar -xf v0.2.14.tar.gz
+
+# change to openblas directory and compile
+cd OpenBLAS-0.2.14
+
+# make with multiple threads (option: -j[num_threads], e.g.: "make -j4" to compile with 
+# four threads at the same time; Option 'USE_THREAD=1' forces OpenBLAS to compile threaded library
+
+# compile
+# make -j4 FC=gfortran USE_THREAD=1 USE_OPENMP=1
+make -j1 FC=gfortran USE_THREAD=1 
+
+# install
+make PREFIX=${INSTDIR}/OpenBLAS install
+
+
+###################
+### Compiling R ###
+###################
+
+cd $SOURCES
+
+# downlad tarball 
+wget https://cran.rstudio.com/src/base/R-3/R-3.2.2.tar.gz
+
+# extract tarball
+tar -xf R-3.2.2.tar.gz
+
+# change to source directory
+cd R-3.2.2
+
+# configure with local prefix and shared-blas
+./configure --prefix=${INSTDIR}/R_openblas --enable-BLAS-shlib --with-cairo
+# compile R as shared library
+#./configure --prefix=${INSTDIR}/R_openblas --enable-BLAS-shlib --enable-R-shlib
+
+# compile
+make -j4
+
+# install
+make install
+
+### now we manually link R's Blas against our newly
+### compiled OpenBLAS
+
+# sometimes the 'lib'-dir appears as 'lib64'
+LIBSUFFIX=lib/R/lib
+
+if [ -d ${INSTDIR}/R_openblas/lib64 ]
+then
+  LIBSUFFIX=lib64/R/lib
+fi
+
+
+# move old blas-library
+mv ${INSTDIR}/R_openblas/${LIBSUFFIX}/libRblas.so ${INSTDIR}/R_openblas/${LIBSUFFIX}/libRblas.so.backup
+
+# create a symbolic link to the OpenBLAS library
+ln -s ${INSTDIR}/OpenBLAS/lib/libopenblas.so ${INSTDIR}/R_openblas/${LIBSUFFIX}/libRblas.so
+
+### R is now linked against OpenBLAS.
+### In order to use this R-Version over the old one, do this:
+
+echo export PATH=${INSTDIR}/R_openblas/bin:${PATH} >> ${HOME}/.bashrc
+
+# do this for current session:
+export PATH=${INSTDIR}/R_openblas/bin:${PATH}
+
+# check that correct R is being called now
+which R
+

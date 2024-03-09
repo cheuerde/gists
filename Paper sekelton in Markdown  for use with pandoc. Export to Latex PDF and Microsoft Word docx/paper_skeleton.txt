@@ -1,0 +1,62 @@
+[//]: # (Claas Heuer, November 2015)
+[//]: # (Run pandoc like this)
+[//]: # (pandoc --filter pandoc-crossref -s -S --bibliography references.bib paper_skeleton.txt -o test.docx)
+[//]: # (pandoc --filter pandoc-crossref -s -S --bibliography references.bib paper_skeleton.txt -o test.pdf)
+
+
+# First Section {#sec:first_section}
+
+This is the first section and we are writing an equation that we want to reference to later in
+the document:
+
+$$
+\mathbf{y} = \mathbf{Xb} + \mathbf{Zu} + \mathbf{e}
+$$ {#eq:first_equation}
+
+This is our first citation [@Bib2014]
+
+
+# Second Section
+
+I want to reference to tables, figures and equations as said in chapter @sec:first_section 
+just like equation @eq:first_equation.
+Most importantly, we want to be able to reference figures, like @fig:first_figure
+and tables like @tbl:first_table
+
+This is our second citation [@Bib2013]
+
+\newpage
+
+# Table Section
+
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| col 3 is      | right-aligned | $1600 |
+| col 2 is      | centered      |   $12 |
+| zebra stripes | are neat      |    $1 | 
+
+: An example table {#tbl:first_table}
+
+\newpage
+
+# Figure Section
+
+![An Example Figure](http://www.molecularecologist.com/wp-content/uploads/2013/11/github-logo.jpg){#fig:first_figure}
+
+\newpage
+
+# Useful 
+
+Pandoc Cross-ref: \url{https://github.com/lierdakil/pandoc-crossref}
+
+Markdown Cheat-Sheet: \url{https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#code}
+
+Latex to Word: \url{https://abnormaldata.wordpress.com/2014/11/17/converting-latex-to-word/}
+
+Citations: \url{http://pandoc.org/demo/example19/Extension-citations.html}
+
+# References
+
+
+
+

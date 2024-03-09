@@ -1,0 +1,33 @@
+#!/bin/bash
+# We are going to compile the C/C++ parts with intel's icc/icpc
+export CC="icc"
+export CXX="icpc"
+export AR="xiar"
+export LD="xild"
+
+export F77='gfortran'
+export FC='gfortran'
+
+# This is the root location of the intel composer - check this!
+INTEL=/opt/intel/composer_xe_2013_sp1.2.144
+
+# From: https://software.intel.com/en-us/articles/using-intel-mkl-with-r
+
+MKL_LIB_PATH=${INTEL}/mkl/lib/intel64
+OMP_LIB_PATH=${INTEL}/compiler/lib/intel64
+
+export LD_LIBRARY_PATH=${MKL_LIB_PATH}:${OMP_LIB_PATH}  
+
+MKL="-L${MKL_LIB_PATH} -L${OMP_LIB_PATH} -Wl,--start-group -lmkl_gf_lp64 -lmkl_intel_thread -lmkl_core -Wl,--end-group -liomp5 -lpthread"
+
+# We also want all R-packages to be compiled with icc/icpc
+mkdir ${HOME}/.R
+echo CC=${CC} > ${HOME}/.R/Makevars
+echo CXX=${CXX} >> ${HOME}/.R/Makevars
+echo CFLAGS= -std=gnu99 ${CFLAGS} >> ${HOME}/.R/Makevars
+echo CXXFLAGS=${CXXFLAGS} >> ${HOME}/.R/Makevars
+
+./configure --with-blas="$MKL" --with-lapack --prefix $HOME/opt/R-MKL/
+
+make 
+make install

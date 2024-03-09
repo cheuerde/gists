@@ -1,0 +1,418 @@
+\documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
+\setbeamertemplate{caption}[numbered]
+\usepackage[ngerman,english]{babel}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{colortbl}
+\usepackage{amsmath}
+%\usepackage[table]{xcolor}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+%\usepackage{natbib}
+%\usepackage[style=authoryear]{biblatex}
+%\addbibresource{phd.bib}
+%\DefineBibliographyStrings{ngerman}{andothers={et\addabbrvspace al\adddot}} 
+\usepackage{rotating}
+\usepackage{graphicx}
+\usepackage{geometry}
+%\geometry{paperwidth=16cm,paperheight=12cm,left=0cm,top=0cm,right=0cm,bottom=0cm,headsep=0cm,nohead,nofoot}
+\usepackage{BeamerColor}
+\usetheme{CambridgeUS}
+\usecolortheme[named=DodgerBlue4]{structure}
+\usecolortheme{dolphin}
+%\useoutertheme{smoothbars}
+\setbeamertemplate{navigation symbols}{}%remove navigation symbols
+
+\defbeamertemplate*{footline}{my infolines theme}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}\insertshortauthor~~\insertshortinstitute
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertshortdate{}\hspace*{2em}
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+%\logo{\includegraphics[width=2cm]{./kopf3.jpg}}
+\title[Parallel Computing in R]{Everyday Multithreading}
+\subtitle{Parallel computing for genomic evaluations in \textit{R}}
+\author{C. Heuer, D. Hinrichs, G. Thaller}
+\institute[]{Institute of Animal Breeding and Husbandry, Kiel University}
+\date{\today}
+\begin{document}
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\section{Introduction}
+\subsection*{}
+\begin{frame}{Introduction}
+\pause
+\begin{itemize}
+\item High Dimensional livestock data sets 
+\item New computational challenges
+\item Paradigm shift in breeding programs \textbf{and} computing
+\item From sparse to dense MME (or mixtures)
+\item High storage, memory and computing demands
+\pause
+\item \textbf{Solution}: Making use of available hardware resources by parallel computing
+\end{itemize}
+\end{frame}
+
+
+
+\section{Parallel Computing}
+\subsection*{}
+\begin{frame}{What parallel computing is:}
+\pause
+
+Splitting up a big problem into chunks that are simultaneously being solved by several processing units
+\pause
+\begin{equation*}
+\begin{bmatrix}
+  -0.09 \\ 
+  -0.65 \\ 
+  -0.08 \\ 
+  -0.95 \\ 
+  -0.02 \\ 
+  -0.59 \\ 
+  -0.55 \\ 
+  0.37 \\ 
+  -0.05 \\ 
+  -0.16 \\ 
+  0.59 \\ 
+  -0.55 \\ 
+  \end{bmatrix}
++
+\begin{bmatrix}
+  -0.92 \\ 
+  0.41 \\ 
+  -0.76 \\ 
+  -1.61 \\ 
+  1.09 \\ 
+  -0.33 \\ 
+  0.83 \\ 
+  3.21 \\ 
+  1.29 \\ 
+  -0.82 \\ 
+  -1.23 \\ 
+  -1.08 \\ 
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  -1.01 \\ 
+  -0.24 \\ 
+  -0.83 \\ 
+  -2.56 \\ 
+  1.07 \\ 
+  -0.92 \\ 
+  0.27 \\ 
+  3.58 \\ 
+  1.23 \\ 
+  -0.98 \\ 
+  -0.64 \\ 
+  -1.64 \\ 
+  \end{bmatrix} 
+\end{equation*}
+\end{frame}
+
+\begin{frame}{What parallel computing is:}
+Splitting up a big problem into chunks that are simultaneously being solved by several processing units
+\begin{equation*}
+\begin{bmatrix}
+  -0.09 \\ 
+  -0.65 \\ 
+  -0.08 \\ 
+  \hline
+  -0.95 \\ 
+  -0.02 \\ 
+  -0.59 \\ 
+    \hline
+  -0.55 \\ 
+  0.37 \\ 
+  -0.05 \\ 
+    \hline
+  -0.16 \\ 
+  0.59 \\ 
+  -0.55 \\ 
+  \end{bmatrix}
++
+\begin{bmatrix}
+  -0.92 \\ 
+  0.41 \\ 
+  -0.76 \\ 
+    \hline
+  -1.61 \\ 
+  1.09 \\ 
+  -0.33 \\ 
+    \hline
+  0.83 \\ 
+  3.21 \\ 
+  1.29 \\ 
+    \hline
+  -0.82 \\ 
+  -1.23 \\ 
+  -1.08 \\ 
+  \end{bmatrix}
+=
+\begin{bmatrix}
+  -1.01 \\ 
+  -0.24 \\ 
+  -0.83 \\ 
+    \hline
+  -2.56 \\ 
+  1.07 \\ 
+  -0.92 \\ 
+    \hline
+  0.27 \\ 
+  3.58 \\ 
+  1.23 \\ 
+    \hline
+  -0.98 \\ 
+  -0.64 \\ 
+  -1.64 \\ 
+  \end{bmatrix} 
+\end{equation*}
+\end{frame}
+
+\begin{frame}{Parallel Computing Paradigms}
+\pause
+\begin{enumerate}
+\item Most importantly: Single Core parallelism  $\rightarrow$ \textbf{Vectorization}
+\item Shared Memory multi-threading $\rightarrow$ \textit{OpenMP}
+\item Distributed Memory multi-processing $\rightarrow$ \textit{MPI}
+\item GPU-programming $\rightarrow$ \textit{CUDA, OpenCL, Intel Xeon-Phi}
+\end{enumerate}
+\pause
+Efficiency/Scaling:
+\begin{itemize}
+\item Depends on size of the problem: Overhead
+\item The less efficient a single-threaded application, the better the scaling
+\pause
+\item In general: First single-threaded optimization then parallelization
+\end{itemize}
+\end{frame}
+
+
+\section{R-Package}
+\subsection*{}
+\begin{frame}{R-package \textit{cpgen}}
+\pause
+Advantages of R:
+\begin{enumerate}
+\item Very flexible open source interpreter language
+\item Easy to use, available on all platforms and widely spread
+\end{enumerate}
+Drawbacks of R:
+\pause
+\begin{enumerate}
+\item Not designed for big data problems
+\item Needs a lot of effort to extend R
+\item Strictly single-threaded 
+\end{enumerate}
+\pause
+But: Can be extended and multi-threaded through C/C++/Fortran shared libraries
+\end{frame}
+
+
+\begin{frame}{General Implementation}
+\pause
+\begin{enumerate}
+\item \textit{R} as the basic environment for data preparation and supply
+\item Linking C++ to R: \textit{Rcpp} (Eddelbuettel and Francois, 2011)
+\item Linear Algebra: \textit{Eigen} $\rightarrow$ Vectorization! (Guennebaud et al., 2010)
+\item Eigen + Rcpp + Sparse-Matrix support: \textit{RcppEigen} (Bates and Eddelbuettel, 2013)
+\item Parallelization: \textit{OpenMP}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Parallel Computing in \textit{cpgen}}
+\pause
+\begin{center}
+\tiny
+\includegraphics[width=.55\textwidth]{cgen_mp.png}
+\end{center}
+\end{frame}
+
+\begin{frame}{Functionality}
+\pause
+\begin{enumerate}
+\item Single-Site Gibbs Sampler for Mixed Models with arbitrary number of random effects (sparse or dense design matrices)
+\item Genomic Prediction Module: Different Methods, Cross Validation
+\item GWAS Module: \textit{EMMAX} - highly efficient and very flexible single marker GWAS
+\item Tools: Genomic additive and dominance relationships, Crossproducts, Covariance Matrices, \dots
+\end{enumerate}
+\end{frame}
+
+
+\begin{frame}{Gibbs Sampler}
+Runs models of the following form:
+\begin{equation*}
+\mathbf{y} = \mathbf{Xb} + \mathbf{Z}_{1}\mathbf{u}_1 + \mathbf{Z}_{2}\mathbf{u}_2 + \mathbf{Z}_{3}\mathbf{u}_3 + ... + \mathbf{Z}_{n}\mathbf{u}_n + \mathbf{e}
+\end{equation*}
+\begin{itemize}
+\item For all $u_k$: $MVN(\mathbf{0},\mathbf{I}\sigma^2_{u_k})$
+\item If $u_k$ is assumed to follow some $MVN(\mathbf{0},\mathbf{G}_k\sigma_{k}^2)$:
+\end{itemize}
+ Design matrix must be constructed as: $ \mathbf{Z}_k = \mathbf{Z}_k \mathbf{G}^{1/2}$, yielding independent effect in $\mathbf{u}_k$ (Waldmann et al., 2008). 
+\end{frame}
+
+
+
+
+\begin{frame}{Genomic BLUP}
+GBLUP can be accomplished very efficiently (Kang et al., 2008):
+\begin{equation*}
+\mathbf{y} = \mathbf{Xb} + \mathbf{a} + \mathbf{e} ~~~ \textrm{with: } \mathbf{a} \sim MVN(\mathbf{0},\mathbf{G}\sigma^2_a)
+\end{equation*} 
+By finding the decomposition: $\mathbf{G=UDU'}$ and premultiplying the model equation by $\mathbf{U'}$ we get:
+\begin{equation*}
+\mathbf{U'y = U'Xb + U'a + U'e}
+\end{equation*} 
+with:
+\begin{align*}
+Var(\mathbf{U'y}) &= \mathbf{U'GU} \sigma^2_a + \mathbf{U'U} \sigma^2_e \\
+&=  \mathbf{U'UDU'U}\sigma^2_a + \mathbf{I}\sigma^2_e \\
+&= \mathbf{D}\sigma^2_a + \mathbf{I}\sigma^2_e
+\end{align*}
+\end{frame}
+
+
+
+\begin{frame}{GWAS}
+\begin{itemize}
+\item Single marker regression 
+\item Controlling for polygenic background effect through [assumed] covariance structure $\mathbf{V}$ of $\mathbf{y}$ - EMMAX (Kang et al., 2010)
+\item Obtaining General Least Squares estimates for marker effects:
+\end{itemize}
+\begin{equation*}
+\hat{\mathbf{\beta}} = (\mathbf{X'V}^{-1}\mathbf{X})^{-1}\mathbf{X'V}^{-1}\mathbf{y}
+\end{equation*}
+This is equivalent to:
+\begin{equation*}
+\hat{\mathbf{\beta}} = (\mathbf{X}^{\ast\prime}\mathbf{X}^{\ast})^{-1}\mathbf{X}^{\ast\prime}\mathbf{y}^{\ast} , ~~ \textrm{with   } \mathbf{X}^{\ast} =\mathbf{V}^{-1/2}\mathbf{X}, ~~ \mathbf{y}^{\ast} =\mathbf{V}^{-1/2}\mathbf{y}
+\end{equation*}
+\end{frame}
+
+
+\begin{frame}{Parallel Computing in \textit{cpgen}}
+What is parallelized:
+\begin{enumerate}
+\item All crossproduct-like computations
+\item Sampling of random effects in Gibbs Sampler (dot product, vector-vector subtraction) $\rightarrow$ Fernando et al., 2014
+\item Cross Validation for genomic prediction
+\item GWAS
+\end{enumerate}
+
+\pause
+Number of threads being used can be controlled during runtime
+\end{frame}
+
+\section{Parallel Scaling}
+\subsection*{}
+\begin{frame}{2,000 Observations, 50,000 Markers}
+\pause
+\begin{center}
+%\tiny
+\includegraphics[width=.8\textwidth]{para_scaling_eaap.jpeg}
+\end{center}
+
+\end{frame}
+
+\begin{frame}{Gibbs Sampler (BRR) - 10,000 Markers}
+\pause
+\begin{center}
+%\tiny
+\includegraphics[width=.8\textwidth]{para_scaling_lmm_eaap.jpeg}
+\end{center}
+
+\end{frame}
+
+
+\section{Conclusions}
+\subsection*{}
+\begin{frame}{Conclusions}
+\pause
+\begin{itemize}
+\item Shared Memory multithreading can decrease computation time significantly
+\item Bridges the gap between single threaded applications and heavily parallelized standalone programs for HPC Clusters
+\item We can make use of the computational power present in workstation PCs 
+$\rightarrow$ \textit{Everyday Multithreading}
+\pause
+\item \textbf{But}: Size of solvable problem is limited by available memory
+\item With 1 TB of memory, the package could fit a BRR model with
+3 million observations and 40k markers
+\end{itemize}
+\end{frame}
+
+
+\section*{}
+\begin{frame}{Acknowledgements}
+\begin{columns}[c]
+\column{2.3in}
+University of Kiel:
+\begin{itemize}
+\item Dr. Georg Thaller
+\item Dr. Teide-Jens Boysen
+\item Anita Ehret
+\end{itemize}
+ISU:
+\begin{itemize}
+\item Dr. Rohan Fernando
+\item Xiaochen Sun
+\item Jian Zeng
+\item Hao Cheng
+\item Dr. Dorian Garrick
+\end{itemize}
+\column{2.3in}
+\includegraphics[width=2.2in]{combined.jpg}
+\end{columns}
+\end{frame}
+
+
+
+
+
+
+
+
+
+\section{}
+\begin{frame}
+\begin{center}
+\huge
+Thank you for the attention
+\end{center}
+\vspace{40pt}
+%Package can be obtained from:\\ 
+\textbf{Github} \url{https://github.com/cheuerde/cpgen}\\
+\textbf{R-Forge} \url{https://r-forge.r-project.org/R/?group_id=1687}
+\end{frame}
+
+
+%%%%%%%
+%%%%%%%
+
+\section*{}
+\subsection*{}
+\begin{frame}[noframenumbering]{Absolute Timings}
+
+10 Cores, 30,000 markers
+
+\begin{itemize}
+\item BRR: 1 million observations, 30k iterations $\sim$ 100 hours 
+\item GWAS: 10k observations $\sim$  7 minutes
+\item G-Matrix: 10k observations $\sim$ 2 minutes
+\end{itemize}
+\end{frame}
+
+
+\end{document}
